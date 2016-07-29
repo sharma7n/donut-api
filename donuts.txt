@@ -1,0 +1,5 @@
+{
+	"maker": "Beavers Coffee and Donuts",
+	"flavor": "Cinnamon",
+	"quality": "High"
+}
