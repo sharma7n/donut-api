@@ -9,7 +9,7 @@ from flask_potion import Api, ModelResource
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "")
 db = SQLAlchemy(app)
 
 class Donut(db.Model):
