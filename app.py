@@ -1,15 +1,15 @@
-# donut_api.py
-# A simple API for imaginary donuts.
-
 import os
 
-from flask import Flask, request, jsonify
+from flask import Flask, redirect, url_for, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_potion import Api, ModelResource
+from twilio.rest import TwilioRestClient
+
+import config
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///temp'
+app.config.from_object('config.DevelopmentConfig')
 db = SQLAlchemy(app)
 
 class DonutShop(db.Model):
@@ -19,7 +19,6 @@ class DonutShop(db.Model):
     name = db.Column(db.String(128))
     address = db.Column(db.String(256))
     zip_code = db.Column(db.String(128))
-    phone = db.Column(db.String(128))
     x_coordinate = db.Column(db.Integer)
     y_coordinate = db.Column(db.Integer)
 
@@ -35,11 +34,7 @@ class DonutShopResource(ModelResource):
 api = Api(app)
 api.add_resource(DonutShopResource)
 
-@app.route("/")
-def root():
-    return """You're at the donut-api root."""
-
-@app.route("/find", methods=['POST',])
+@app.route("/", methods=['POST',])
 def find_donut_shop():
     if request.method == 'POST':
         data = request.values
@@ -50,4 +45,4 @@ def find_donut_shop():
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port)
